@@ -57,6 +57,7 @@ func (thread *Thread) Posts() (posts []Post, err error) {
 	}
 }
 
+
 func (user *User) createThread(topic string) (conv Thread, err error) {
 	statement := "INSERT INTO threads (uuid, topic, user_id, created_at) values ($1, $2, $3, $4) returning id. uuid, topic, user_id,created_at"
 	stmt, err := Db.Prepare(statement)
@@ -66,5 +67,33 @@ func (user *User) createThread(topic string) (conv Thread, err error) {
 	defer stmt.Close()
 
 	err = stmt.QueryRow(createUUID(), topic, user.Id, time.Now()).Scan(&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt)
+	return
+}
+
+func (user * User) CreatePost(conv Thread, body string) (post Post, err error) {
+	statement := "INSERT INTO posts (uuid, body, user_id, thread_id, created_at) values ($1, $2, $3, $4, $5) returning id, uuid, body, user_id, thread_id, created_at"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+	err = stmt.QueryRow(createUUID(), body, user.Id, conv.Id, time.Now()).Scan(&post.Id, &post.Uuid, &post.Body, &post.UserId, &post.ThreadId, &post.CreatedAt)
+	return
+}
+
+// thread一覧を新しいもの順に取得する
+func Threads() (threads []Thread, err error) {
+	rows, err := Db.Query("SELECT id, uuid, topic, user_id, creared_at, FROM threads ORDER BY created_at DESC")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		conv := Thread{}
+		if err = rows.Scan(&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt); err != nil {
+			return
+		}
+		threads = append(threads, conv)
+	}
+	rows.Close()
 	return
 }
