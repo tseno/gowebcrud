@@ -1,0 +1,2 @@
+INSERT INTO public.users (id, uuid, name, email, password, created_at) VALUES (10, 'xxx10', 'tseno', 'tseno', 'a', '2018-06-18 21:16:49');
+INSERT INTO public.users (id, uuid, name, email, password, created_at) VALUES (20, 'xxx20', 'yamada', 'yamada', 'a', '2018-06-18 21:16:49');
