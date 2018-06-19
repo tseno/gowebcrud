@@ -1,0 +1,2 @@
+INSERT INTO public.posts (id, uuid, body, user_id, thread_id, created_at) VALUES (3, '100', 'テストです。', 10, 10, '2018-06-18 21:15:10');
+INSERT INTO public.posts (id, uuid, body, user_id, thread_id, created_at) VALUES (4, '101', 'テストです。', 20, 10, '2018-06-18 21:15:10');

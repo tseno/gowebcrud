@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"crypto/sha1"
+	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -13,8 +14,8 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	Db, err := sql.Open("sqlite3", "./test.db")
-	//Db, err = sql.Open("postgresql", "dbname=gocrud sslmode=disable")
+	//Db, err := sql.Open("sqlite3", "./test.db")
+	Db, err = sql.Open("postgres", "dbname=gocrud sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,0 +1,1 @@
+INSERT INTO public.threads (id, uuid, topic, user_id, created_at) VALUES (10, 'ttt10', 'こんにちは', 10, '2018-06-18 21:18:34');
