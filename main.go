@@ -29,6 +29,8 @@ func init() {
 
 func main() {
 
+	p("ChitChat" ,version(), "started at", config.Address)
+
 	mux := http.NewServeMux()
 
 	server := http.Server{
