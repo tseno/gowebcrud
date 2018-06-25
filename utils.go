@@ -15,7 +15,7 @@ import (
 type Configuration struct {
 	Address      string
 	ReadTimeout  int64
-	writeTimeout int64
+	WriteTimeout int64
 	Static       string
 }
 
