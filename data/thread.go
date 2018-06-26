@@ -59,7 +59,7 @@ func (thread *Thread) Posts() (posts []Post, err error) {
 	return
 }
 
-func (user *User) createThread(topic string) (conv Thread, err error) {
+func (user *User) CreateThread(topic string) (conv Thread, err error) {
 	statement := "INSERT INTO threads (uuid, topic, user_id, created_at) values ($1, $2, $3, $4) returning id, uuid, topic, user_id,created_at"
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
