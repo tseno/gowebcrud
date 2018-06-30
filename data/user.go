@@ -97,6 +97,18 @@ func (user *User) Create() (err error) {
 	return
 }
 
+func (user *User) Delete() (err error) {
+	statement := "delete from users where id = $1"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(user.Id)
+	return
+}
+
 // userをアップデートする
 func (user *User) Update() (err error) {
 	statement := "UPDATE users set name = $2, email = $3 where id = $1"

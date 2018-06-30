@@ -2,7 +2,8 @@ package main
 
 import (
 	"net/http"
-	"github.com/tseno/gowebcrud/data"
+	"gowebcrud/data"
+	"fmt"
 )
 
 func newThread(writer http.ResponseWriter, request *http.Request) {
@@ -12,7 +13,7 @@ func newThread(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
 		// ログアウトボタン付きの、新スレッド作成画面を表示する
-		generateHTML(writer, nil, "layout", "private.navber", "new.thread")
+		generateHTML(writer, nil, "layout", "private.navbar", "new.thread")
 	}
 }
 
@@ -64,7 +65,27 @@ func postThread(writer http.ResponseWriter, request *http.Request) {
 		// ログインしていなければ、ログイン画面に遷移する
 		http.Redirect(writer, request, "/login", 302)
 	} else {
-
+		// リクエストをパースする
+		err = request.ParseForm()
+		if err != nil {
+			danger(err,"Cannot parse form")
+		}
+		user, err := sess.User()
+		if err != nil {
+			danger(err,"Cannot get user from session")
+		}
+		body := request.PostFormValue("body")
+		uuid := request.PostFormValue("uuid")
+		thread, err := data.ThreadByUUID(uuid)
+		if err != nil {
+			error_message(writer, request, "Cannot read thread")
+		}
+		// 投稿を保存する
+		if _, err := user.CreatePost(thread, body); err != nil {
+			danger(err, "Cannot create post")
+		}
+		url := fmt.Sprint("/thread/read?id=", uuid)
+		http.Redirect(writer,request,url,302)
 	}
 
 }

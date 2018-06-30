@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"github.com/tseno/gowebcrud/data"
+	"gowebcrud/data"
 )
 
 func err(writer http.ResponseWriter, request *http.Request) {
