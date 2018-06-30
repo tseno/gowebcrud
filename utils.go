@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-	"github.com/tseno/gowebcrud/data"
+	"gowebcrud/data"
 	"errors"
 	"html/template"
 )
@@ -60,7 +60,7 @@ func error_message(writer http.ResponseWriter, request *http.Request, msg string
 func session(writer http.ResponseWriter, request *http.Request) (sess data.Session, err error) {
 	// クッキーを取得する
 	cookie, err := request.Cookie("_cookie")
-	if err != nil {
+	if err == nil {
 		sess = data.Session{Uuid: cookie.Value}
 		if ok, _ := sess.Check(); !ok {
 			err = errors.New("invalid session")
@@ -74,7 +74,7 @@ func parseTemplateFiles(filenames ...string) (t *template.Template) {
 	var files []string
 	t = template.New("layout")
 	for _, file := range filenames {
-		files = append(files, fmt.Sprintf("tempates/%s.html", file))
+		files = append(files, fmt.Sprintf("templates/%s.html", file))
 	}
 	t = template.Must(t.ParseFiles(files...))
 	return

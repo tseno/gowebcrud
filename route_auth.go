@@ -1,13 +1,13 @@
 package main
 
 import (
+	"gowebcrud/data"
 	"net/http"
-	"github.com/tseno/gowebcrud/data"
 )
 
 func login(writer http.ResponseWriter, request *http.Request) {
 	// ログイン画面の表示
-	t := parseTemplateFiles("login.layout", "public.navber", "login")
+	t := parseTemplateFiles("login.layout", "public.navbar", "login")
 	t.Execute(writer, nil)
 }
 
@@ -61,6 +61,8 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 		}
 		http.SetCookie(writer, &cookie)
 		http.Redirect(writer, request, "/", 302)
+	} else {
+		http.Redirect(writer, request, "/login", 302)
 	}
 
 }
